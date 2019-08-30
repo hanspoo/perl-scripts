@@ -6,12 +6,13 @@ use 5.010;
 use DateTime;
 use DateTime::Duration;
 
-
-use Getopt::Long;
-
 my $days = 0;
 if (@ARGV) {
 	my $s = shift @ARGV;
+	if ($s =~ "--help|-h") {
+		&do_help();
+		exit 0;
+	}
 	if ($s !~ /^(\+|-)?[0-9]+$/) {
 		print STDERR "Argument must be a number of days\n";
 		exit -1;
@@ -38,3 +39,24 @@ $dia =~ s/[^a-z]//g;
 
 print "$dia\n";
  
+
+sub do_help {
+
+print <<EOF;
+Usage:
+
+Print the three letter day name of the week of yeasterday.
+dayname -1
+
+Print the three letter day name of the week of today.
+dayname
+dayname 0
+
+Print the three letter day name of the week of tomorow.
+dayname 1
+dayname +1
+
+EOF
+
+
+}
