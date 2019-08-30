@@ -1,0 +1,40 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use 5.010;
+ 
+use DateTime;
+use DateTime::Duration;
+
+
+use Getopt::Long;
+
+my $days = 0;
+if (@ARGV) {
+	my $s = shift @ARGV;
+	if ($s !~ /^(\+|-)?[0-9]+$/) {
+		print STDERR "Argument must be a number of days\n";
+		exit -1;
+
+	}
+	$days = int($s);
+}
+
+my $dt = DateTime->now(); 
+
+
+my $day_result = $dt;
+
+if ($days > 0) {
+	$day_result = $dt + DateTime::Duration->new( days => $days );
+} else {
+	$day_result = $dt - DateTime::Duration->new( days => -1 * $days );
+}
+ 
+$day_result->set_locale($ENV{LANG});
+my $dia = $day_result->strftime("%a\n");
+
+$dia =~ s/[^a-z]//g;
+
+print "$dia\n";
+ 
